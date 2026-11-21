@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Join CineScope | CineScope{% endblock %}
+{% block content %}
+<div class="auth-wrap"><div class="auth-card"><p class="eyebrow">JOIN THE COMMUNITY</p><h1>Create account</h1><p class="muted">Your next favourite movie is waiting.</p>
+<form method="post" class="stack-form">{% csrf_token %}
+{% for field in form %}<label>{{ field.label }}{{ field }}{% if field.help_text %}<small class="help-text">{{ field.help_text|safe }}</small>{% endif %}{% if field.errors %}<span class="field-error">{{ field.errors|striptags }}</span>{% endif %}</label>{% endfor %}
+<button class="primary-btn full">Create account</button>
+</form><p class="auth-foot">Already registered? <a href="{% url 'login' %}">Log in</a></p></div></div>
+{% endblock %}

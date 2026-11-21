@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}My Reviews | CineScope{% endblock %}
+{% block content %}
+<p class="eyebrow">YOUR OPINIONS</p><h1 class="page-title">My reviews</h1>
+<div class="review-list">
+{% for review in reviews %}
+  <article class="review-card"><div class="review-top"><div><strong><a href="{% url 'movie_detail' review.movie.pk %}">{{ review.movie.title }}</a></strong><p class="muted">{{ review.created_at|date:"M d, Y" }}</p></div><span class="review-score">★ {{ review.rating }}/10</span></div><h3>{{ review.title }}</h3><p>{{ review.body }}</p></article>
+{% empty %}<div class="empty-state"><h3>You haven't written any reviews</h3><p>Explore movies and share your thoughts.</p><a href="{% url 'home' %}">Explore movies</a></div>{% endfor %}
+</div>
+{% endblock %}

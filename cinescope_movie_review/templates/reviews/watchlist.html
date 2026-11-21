@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}My Watchlist | CineScope{% endblock %}
+{% block content %}
+<p class="eyebrow">YOUR SAVED COLLECTION</p><h1 class="page-title">My watchlist</h1>
+<div class="movie-grid">
+{% for item in items %}
+  <article class="movie-card">
+    <a href="{% url 'movie_detail' item.movie.pk %}" class="poster-wrap">
+      {% if item.movie.poster_url %}<img src="{{ item.movie.poster_url }}" alt="{{ item.movie.title }} poster">{% else %}<div class="poster-placeholder">🎬</div>{% endif %}
+      <span class="poster-overlay">View movie →</span>
+    </a>
+    <div class="movie-info"><div class="movie-meta"><span>{{ item.movie.genre }}</span><span>{{ item.movie.release_year }}</span></div><h3>{{ item.movie.title }}</h3></div>
+  </article>
+{% empty %}<div class="empty-state"><h3>Your watchlist is empty</h3><p>Save movies you want to watch later.</p><a href="{% url 'home' %}">Discover movies</a></div>{% endfor %}
+</div>
+{% endblock %}

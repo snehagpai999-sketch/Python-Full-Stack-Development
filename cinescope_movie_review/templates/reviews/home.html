@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Discover Movies | CineScope{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">YOUR MOVIE COMMUNITY</p>
+    <h1>Every movie has<br><span>a story worth sharing.</span></h1>
+    <p class="hero-text">Discover films, explore honest reviews and find your next favourite movie.</p>
+    <a class="primary-btn" href="#movie-list">Explore movies <span>→</span></a>
+  </div>
+  <div class="hero-art"><div class="reel">▶</div><div class="hero-note">Lights. Camera. Your opinion.</div></div>
+</section>
+
+<section class="section-head" id="movie-list">
+  <div><p class="eyebrow">THE COLLECTION</p><h2>Explore movies</h2></div>
+  <span class="muted">{{ movies|length }} result{{ movies|length|pluralize }}</span>
+</section>
+
+<form method="get" class="filters">
+  <input type="search" name="q" placeholder="Search movies or directors..." value="{{ query }}">
+  <select name="genre"><option value="">All genres</option>{% for value,label in genres %}<option value="{{ value }}" {% if selected_genre == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+  <input type="number" name="year" placeholder="Year" min="1900" max="2100" value="{{ selected_year }}">
+  <select name="sort">
+    <option value="title" {% if selected_sort == "title" %}selected{% endif %}>Title A–Z</option>
+    <option value="newest" {% if selected_sort == "newest" %}selected{% endif %}>Newest</option>
+    <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>Oldest</option>
+    <option value="rating" {% if selected_sort == "rating" %}selected{% endif %}>Highest rated</option>
+  </select>
+  <button class="primary-btn filter-btn">Search</button>
+</form>
+
+<div class="movie-grid">
+{% for movie in movies %}
+  <article class="movie-card">
+    <a href="{% url 'movie_detail' movie.pk %}" class="poster-wrap">
+      {% if movie.poster_url %}<img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" loading="lazy">{% else %}<div class="poster-placeholder">🎬<span>{{ movie.title }}</span></div>{% endif %}
+      <span class="poster-overlay">View movie →</span>
+    </a>
+    <div class="movie-info">
+      <div class="movie-meta"><span>{{ movie.genre }}</span><span>{{ movie.release_year }}</span></div>
+      <h3><a href="{% url 'movie_detail' movie.pk %}">{{ movie.title }}</a></h3>
+      <p class="rating">★ {% if movie.average_rating %}{{ movie.average_rating }}/10{% else %}Not rated yet{% endif %} <small>({{ movie.review_count }} reviews)</small></p>
+    </div>
+  </article>
+{% empty %}
+  <div class="empty-state"><div>🎞️</div><h3>No movies found</h3><p>Try changing your search or filters.</p><a href="{% url 'home' %}">Clear filters</a></div>
+{% endfor %}
+</div>
+{% endblock %}
